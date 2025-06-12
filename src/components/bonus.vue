@@ -42,7 +42,7 @@ const showOnlyInStock = ref(false);
 
 const categories = computed(() => {
     const uniqueCategories = new Set();
-    for (const product of productsData.produits) {
+    for (const product of productsData) {
         uniqueCategories.add(product.category);
     }
     return ['Toutes', ...Array.from(uniqueCategories)];
@@ -53,8 +53,9 @@ const filteredProducts = computed(() => {
         const matchesSearchQuery = product.name.toLowerCase().includes(searchQuery.value.toLowerCase());
         const matchesCategory = selectedCategory.value === 'Toutes' || product.category === selectedCategory.value;
         const matchesMaxprice = product.price <= maxPrice.value;
+        const matchesInStock = !showOnlyInStock.value || product.stock > 0;
+        return matchesSearchQuery && matchesCategory && matchesMaxprice && matchesInStock;
     });
-
 });
 
 
